@@ -1,2 +1,2 @@
 # LUA-Password_Generator-V2
-This is an updated version of my password generator I made. 
+This is an updated and better customization version of the LUAU password generator I made. 
