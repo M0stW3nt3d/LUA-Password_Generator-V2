@@ -1,0 +1,62 @@
+-- Improved LUA Password Generator
+math.randomseed(os.time() + os.clock())
+
+-- Function to generate a single password
+local function generatePassword(length, chars)
+    local password = ""
+    for i = 1, length do
+        local randomIndex = math.random(#chars)
+        password = password .. string.sub(chars, randomIndex, randomIndex)
+    end
+    return password
+end
+
+-- Help information
+if arg[1] == "--help" or arg[1] == "-h" then
+    print("LUA Password Generator")
+    print("Usage: lua MAIN [count] [length] [--special]")
+    print("")
+    print("Arguments:")
+    print("  count    : number of passwords to generate (default: 10, max: 1000)")
+    print("  length   : length of each password (default: 8, range: 1-100)")
+    print("  --special: include special characters (!@#$%^&*)")
+    print("")
+    print("Examples:")
+    print("  lua MAIN              -- Generate 10 passwords of length 8")
+    print("  lua MAIN 5            -- Generate 5 passwords of length 8")
+    print("  lua MAIN 5 12         -- Generate 5 passwords of length 12")
+    print("  lua MAIN 5 12 --special -- Generate 5 passwords with special characters")
+    return
+end
+
+-- Parse command-line arguments
+local count = tonumber(arg[1]) or 10
+local length = tonumber(arg[2]) or 8
+local useSpecial = arg[3] == "--special"
+
+-- Character sets
+local basicChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+local specialChars = "!@#$%^&*-_=+[]{}|;:,.<>?"
+local chars = useSpecial and (basicChars .. specialChars) or basicChars
+
+-- Input validation
+if count < 1 or count > 1000 then
+    print("Error: Password count must be between 1 and 1000")
+    return
+end
+
+if length < 1 or length > 100 then
+    print("Error: Password length must be between 1 and 100")
+    return
+end
+
+-- Generate and display passwords
+print("Generating " .. count .. " random passwords (length: " .. length .. ")...")
+if useSpecial then
+    print("(Using special characters)")
+end
+print("")
+
+for i = 1, count do
+    print(string.format("%2d. %s", i, generatePassword(length, chars)))
+end
